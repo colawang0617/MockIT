@@ -13,10 +13,11 @@ const elevenlabs = new ElevenLabsClient({
 export const textToSpeechAudio = async (text: string): Promise<string> => {
     return new Promise<string>(async (resolve, reject) => {
         try {
-            const audio = await elevenlabs.textToSpeech.convert('uxKr2vlA4hYgXZR1oPRT', {
+            const audio = await elevenlabs.textToSpeech.stream('uxKr2vlA4hYgXZR1oPRT', {
                 text,
                 modelId: "eleven_multilingual_v2",
                 outputFormat: "mp3_44100_128",
+                optimizeStreamingLatency: 4,
                 voiceSettings: {
                     stability: 0,
                     similarityBoost: 0,

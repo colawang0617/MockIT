@@ -1,7 +1,7 @@
 import { textToSpeechAudio } from "./textToSpeechAudio.mts";
 import { readFileSync } from 'fs';
 
-const tt = readFileSync ('./short.txt', 'utf-8');
+const tt = readFileSync ('./testingText/short.txt', 'utf-8');
 
 async function main() {
     try{
