@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import ReadyPlayerMeAvatar, { AvatarControls } from './ReadyPlayerMeAvatar';
 
 export default function InterviewPage() {
     const searchParams = useSearchParams();
@@ -16,11 +17,19 @@ export default function InterviewPage() {
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState('');
     const [currentInterviewerMessage, setCurrentInterviewerMessage] = useState('');
+    
     const wsRef = useRef<WebSocket | null>(null);
     const recognitionRef = useRef<any>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const currentAudioSourceRef = useRef<AudioBufferSourceNode | null>(null);
     const hasAutoStarted = useRef(false);
+    const avatarControlsRef = useRef<AvatarControls | null>(null);
+
+    // Handle avatar ready
+    const handleAvatarReady = (controls: AvatarControls) => {
+        avatarControlsRef.current = controls;
+        console.log('Avatar ready for lip sync');
+    };
 
     useEffect(() => {
         // Initialize Web Speech API
@@ -138,15 +147,18 @@ export default function InterviewPage() {
                             setTimeout(() => {
                                 recognitionRef.current?.start();
                                 setStatus('Listening - Speak when ready');
-                            }, 1000); // Wait 1 second after audio starts
+                            }, 1000);
                         }
                         break;
 
                     case 'interrupt':
-                        // AI is interrupting - stop current AI audio playback
+                        // AI is interrupting - stop current AI audio playback and avatar
                         if (currentAudioSourceRef.current) {
                             currentAudioSourceRef.current.stop();
                             currentAudioSourceRef.current = null;
+                        }
+                        if (avatarControlsRef.current) {
+                            avatarControlsRef.current.stopAudio();
                         }
                         setStatus(`Interviewer interrupting: ${data.reason}`);
                         setTranscript('');
@@ -171,41 +183,61 @@ export default function InterviewPage() {
                         } else {
                             setStatus('AI responding');
                         }
-
-                        // Keep listening continuously - no need to restart
                         break;
 
                     case 'interviewer_audio':
-                        // Play audio response
+                        // Play audio response with lip sync
                         try {
                             // Stop any currently playing audio
                             if (currentAudioSourceRef.current) {
                                 currentAudioSourceRef.current.stop();
+                                currentAudioSourceRef.current = null;
+                            }
+                            if (avatarControlsRef.current) {
+                                avatarControlsRef.current.stopAudio();
                             }
 
-                            if (!audioContextRef.current) {
-                                audioContextRef.current = new AudioContext();
-                            }
-
+                            // Decode base64 to binary
                             const binaryString = atob(data.audio);
                             const bytes = new Uint8Array(binaryString.length);
                             for (let i = 0; i < binaryString.length; i++) {
                                 bytes[i] = binaryString.charCodeAt(i);
                             }
 
-                            const audioBuffer = await audioContextRef.current.decodeAudioData(bytes.buffer);
-                            const source = audioContextRef.current.createBufferSource();
-                            source.buffer = audioBuffer;
-                            source.connect(audioContextRef.current.destination);
+                            // Create blob URL for avatar
+                            const audioBlob = new Blob([bytes.buffer], { type: 'audio/mpeg' });
+                            const audioUrl = URL.createObjectURL(audioBlob);
 
-                            // Store reference for potential interruption
-                            currentAudioSourceRef.current = source;
-                            source.start();
+                            // Play with avatar lip sync
+                            if (avatarControlsRef.current) {
+                                // Avatar will handle the audio playback
+                                await avatarControlsRef.current.playAudio(audioUrl);
+                                
+                                // Clean up blob URL after audio ends
+                                setTimeout(() => {
+                                    URL.revokeObjectURL(audioUrl);
+                                }, 60000); // Clean up after 1 minute
+                            } else {
+                                // Fallback: play audio without avatar
+                                console.warn('Avatar not ready, playing audio without lip sync');
+                                if (!audioContextRef.current) {
+                                    audioContextRef.current = new AudioContext();
+                                }
+                                
+                                const audioBuffer = await audioContextRef.current.decodeAudioData(bytes.buffer);
+                                const source = audioContextRef.current.createBufferSource();
+                                source.buffer = audioBuffer;
+                                source.connect(audioContextRef.current.destination);
 
-                            source.onended = () => {
-                                currentAudioSourceRef.current = null;
-                                setStatus('Ready - Your turn');
-                            };
+                                currentAudioSourceRef.current = source;
+                                source.start();
+
+                                source.onended = () => {
+                                    currentAudioSourceRef.current = null;
+                                    setStatus('Ready - Your turn');
+                                    URL.revokeObjectURL(audioUrl);
+                                };
+                            }
 
                             // Keep microphone listening during AI speech for interruption detection
                             if (recognitionRef.current && !isListening) {
@@ -217,6 +249,7 @@ export default function InterviewPage() {
                             }
                         } catch (error) {
                             console.error('Audio playback error:', error);
+                            setStatus('Error playing audio');
                         }
                         break;
 
@@ -255,7 +288,6 @@ export default function InterviewPage() {
     useEffect(() => {
         if (!hasAutoStarted.current) {
             hasAutoStarted.current = true;
-            // Small delay to ensure speech recognition is initialized
             setTimeout(() => {
                 connectWebSocket();
             }, 500);
@@ -330,352 +362,349 @@ export default function InterviewPage() {
                 position: 'relative',
                 overflow: 'hidden'
             }}>
-            {/* Decorative background elements */}
-            <div style={{
-                position: 'absolute',
-                width: '600px',
-                height: '600px',
-                background: 'rgba(255,255,255,0.1)',
-                borderRadius: '50%',
-                top: '-15%',
-                right: '-10%',
-                filter: 'blur(80px)',
-                pointerEvents: 'none'
-            }} />
-            <div style={{
-                position: 'absolute',
-                width: '400px',
-                height: '400px',
-                background: 'rgba(255,255,255,0.1)',
-                borderRadius: '50%',
-                bottom: '-10%',
-                left: '-5%',
-                filter: 'blur(60px)',
-                pointerEvents: 'none'
-            }} />
-
-            {/* Header */}
-            <div style={{
-                padding: '2rem',
-                background: 'rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(10px)',
-                borderBottom: '1px solid rgba(255,255,255,0.2)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                position: 'relative',
-                zIndex: 10
-            }}>
-                <div>
-                    <div style={{
-                        fontSize: '0.75rem',
-                        letterSpacing: '0.15em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.7)',
-                        marginBottom: '0.5rem',
-                        fontWeight: '600'
-                    }}>
-                        Interview Session
-                    </div>
-                    <h1 style={{
-                        margin: 0,
-                        fontSize: '1.75rem',
-                        fontWeight: 'bold',
-                        letterSpacing: '-0.02em',
-                        textShadow: '0 2px 10px rgba(0,0,0,0.1)'
-                    }}>
-                        {university} · {program}
-                    </h1>
-                </div>
-                {isConnected && (
-                    <button
-                        onClick={endSession}
-                        style={{
-                            padding: '0.75rem 2rem',
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                            color: '#fff',
-                            background: 'rgba(255,255,255,0.2)',
-                            border: '2px solid rgba(255,255,255,0.3)',
-                            borderRadius: '12px',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                            backdropFilter: 'blur(10px)'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.background = 'rgba(239,68,68,0.9)';
-                            e.currentTarget.style.borderColor = '#ef4444';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
-                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = 'none';
-                        }}
-                    >
-                        End Interview
-                    </button>
-                )}
-            </div>
-
-            {/* Status Bar */}
-            <div style={{
-                padding: '1rem 2rem',
-                background: 'rgba(0,0,0,0.1)',
-                backdropFilter: 'blur(10px)',
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-                position: 'relative',
-                zIndex: 10
-            }}>
+                {/* Decorative background elements */}
                 <div style={{
-                    width: '8px',
-                    height: '8px',
+                    position: 'absolute',
+                    width: '600px',
+                    height: '600px',
+                    background: 'rgba(255,255,255,0.1)',
                     borderRadius: '50%',
-                    background: isConnected ? '#10b981' : 'rgba(255,255,255,0.3)',
-                    boxShadow: isConnected ? '0 0 12px #10b981' : 'none',
-                    animation: isConnected ? 'pulse 2s infinite' : 'none'
+                    top: '-15%',
+                    right: '-10%',
+                    filter: 'blur(80px)',
+                    pointerEvents: 'none'
                 }} />
                 <div style={{
-                    fontSize: '0.875rem',
-                    color: 'rgba(255,255,255,0.9)',
-                    fontWeight: '500'
+                    position: 'absolute',
+                    width: '400px',
+                    height: '400px',
+                    background: 'rgba(255,255,255,0.1)',
+                    borderRadius: '50%',
+                    bottom: '-10%',
+                    left: '-5%',
+                    filter: 'blur(60px)',
+                    pointerEvents: 'none'
+                }} />
+
+                {/* Header */}
+                <div style={{
+                    padding: '2rem',
+                    background: 'rgba(255,255,255,0.1)',
+                    backdropFilter: 'blur(10px)',
+                    borderBottom: '1px solid rgba(255,255,255,0.2)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    position: 'relative',
+                    zIndex: 10
                 }}>
-                    {status}
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div style={{
-                flex: 1,
-                padding: '3rem 2rem',
-                maxWidth: '900px',
-                margin: '0 auto',
-                width: '100%',
-                position: 'relative',
-                zIndex: 1
-            }}>
-                {isConnected && (
-                    <>
-                        {/* Voice Control */}
-                        <div style={{
-                            marginBottom: '3rem',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '2rem'
-                        }}>
-                            <button
-                                onClick={toggleListening}
-                                style={{
-                                    width: '100px',
-                                    height: '100px',
-                                    borderRadius: '50%',
-                                    background: isListening
-                                        ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                                        : 'rgba(255,255,255,0.2)',
-                                    border: `3px solid ${isListening ? '#10b981' : 'rgba(255,255,255,0.3)'}`,
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '2.5rem',
-                                    transition: 'all 0.3s ease',
-                                    boxShadow: isListening ? '0 0 40px rgba(16, 185, 129, 0.6), 0 8px 20px rgba(0,0,0,0.2)' : '0 4px 15px rgba(0,0,0,0.2)',
-                                    position: 'relative',
-                                    backdropFilter: 'blur(10px)',
-                                    animation: isListening ? 'float 3s ease-in-out infinite' : 'none'
-                                }}
-                                onMouseOver={(e) => {
-                                    e.currentTarget.style.transform = 'scale(1.05)';
-                                }}
-                                onMouseOut={(e) => {
-                                    e.currentTarget.style.transform = 'scale(1)';
-                                }}
-                            >
-                                <span>🎤</span>
-                                {isListening && (
-                                    <>
-                                        <div style={{
-                                            position: 'absolute',
-                                            width: '100%',
-                                            height: '100%',
-                                            borderRadius: '50%',
-                                            border: '3px solid #10b981',
-                                            animation: 'pulse 2s infinite'
-                                        }} />
-                                        <div style={{
-                                            position: 'absolute',
-                                            width: '110%',
-                                            height: '110%',
-                                            borderRadius: '50%',
-                                            border: '2px solid #10b981',
-                                            animation: 'pulse 2s infinite',
-                                            animationDelay: '0.5s'
-                                        }} />
-                                    </>
-                                )}
-                            </button>
-                            {transcript && (
-                                <div style={{
-                                    padding: '1.5rem 2rem',
-                                    background: 'rgba(255,255,255,0.15)',
-                                    backdropFilter: 'blur(10px)',
-                                    borderRadius: '16px',
-                                    border: '1px solid rgba(255,255,255,0.2)',
-                                    fontSize: '1.1rem',
-                                    color: '#fff',
-                                    fontStyle: 'italic',
-                                    textAlign: 'center',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                    maxWidth: '600px',
-                                    width: '100%'
-                                }}>
-                                    "{transcript}"
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Text Input (Alternative) */}
-                        <div style={{ marginBottom: '3rem' }}>
-                            <input
-                                type="text"
-                                value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && sendTextMessage()}
-                                placeholder="Or type your response here..."
-                                style={{
-                                    width: '100%',
-                                    padding: '1rem 1.5rem',
-                                    fontSize: '1rem',
-                                    color: '#fff',
-                                    background: 'rgba(255,255,255,0.1)',
-                                    border: '2px solid rgba(255,255,255,0.2)',
-                                    borderRadius: '12px',
-                                    outline: 'none',
-                                    backdropFilter: 'blur(10px)',
-                                    transition: 'all 0.3s ease'
-                                }}
-                                onFocus={(e) => {
-                                    e.target.style.background = 'rgba(255,255,255,0.15)';
-                                    e.target.style.borderColor = 'rgba(255,255,255,0.4)';
-                                }}
-                                onBlur={(e) => {
-                                    e.target.style.background = 'rgba(255,255,255,0.1)';
-                                    e.target.style.borderColor = 'rgba(255,255,255,0.2)';
-                                }}
-                            />
-                        </div>
-                    </>
-                )}
-
-                {/* Conversation */}
-                {(messages.length > 0 || currentInterviewerMessage) && (
                     <div>
                         <div style={{
-                            fontSize: '0.875rem',
-                            letterSpacing: '0.1em',
+                            fontSize: '0.75rem',
+                            letterSpacing: '0.15em',
                             textTransform: 'uppercase',
                             color: 'rgba(255,255,255,0.7)',
-                            marginBottom: '2rem',
-                            fontWeight: '600',
-                            textAlign: 'center'
+                            marginBottom: '0.5rem',
+                            fontWeight: '600'
                         }}>
-                            Conversation Transcript
+                            Interview Session
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                            {messages.map((msg, idx) => (
-                                <div
-                                    key={idx}
-                                    style={{
-                                        padding: '1.5rem 2rem',
-                                        background: msg.role === 'user'
-                                            ? 'rgba(59,130,246,0.15)'
-                                            : 'rgba(147,51,234,0.15)',
-                                        backdropFilter: 'blur(10px)',
-                                        borderRadius: '16px',
-                                        border: `1px solid ${msg.role === 'user' ? 'rgba(59,130,246,0.3)' : 'rgba(147,51,234,0.3)'}`,
-                                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                        transition: 'all 0.3s ease',
-                                        position: 'relative'
-                                    }}
-                                    onMouseOver={(e) => {
-                                        e.currentTarget.style.transform = 'translateX(4px)';
-                                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.15)';
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.currentTarget.style.transform = 'translateX(0)';
-                                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                                    }}
-                                >
-                                    <div style={{
-                                        fontSize: '0.75rem',
-                                        color: 'rgba(255,255,255,0.6)',
-                                        marginBottom: '0.75rem',
-                                        letterSpacing: '0.1em',
-                                        fontWeight: '600',
-                                        textTransform: 'uppercase'
-                                    }}>
-                                        {msg.role === 'user' ? '👤 You' : '🎙️ Interviewer'}
-                                    </div>
-                                    <div style={{
-                                        fontSize: '1.05rem',
-                                        color: '#fff',
-                                        lineHeight: '1.7',
-                                        fontWeight: '400'
-                                    }}>
-                                        {msg.content}
-                                    </div>
-                                </div>
-                            ))}
-                            {currentInterviewerMessage && (
-                                <div style={{
-                                    padding: '1.5rem 2rem',
-                                    background: 'rgba(147,51,234,0.2)',
-                                    backdropFilter: 'blur(10px)',
-                                    borderRadius: '16px',
-                                    border: '1px solid rgba(147,51,234,0.4)',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                    position: 'relative'
-                                }}>
-                                    <div style={{
-                                        fontSize: '0.75rem',
-                                        color: 'rgba(255,255,255,0.6)',
-                                        marginBottom: '0.75rem',
-                                        letterSpacing: '0.1em',
-                                        fontWeight: '600',
-                                        textTransform: 'uppercase'
-                                    }}>
-                                        🎙️ Interviewer
-                                    </div>
-                                    <div style={{
-                                        fontSize: '1.05rem',
-                                        color: '#fff',
-                                        lineHeight: '1.7',
-                                        fontWeight: '400'
-                                    }}>
-                                        {currentInterviewerMessage}
-                                        <span style={{
-                                            display: 'inline-block',
-                                            width: '2px',
-                                            height: '1.2em',
-                                            background: '#10b981',
-                                            marginLeft: '4px',
-                                            animation: 'blink 1s infinite',
-                                            verticalAlign: 'middle'
-                                        }} />
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        <h1 style={{
+                            margin: 0,
+                            fontSize: '1.75rem',
+                            fontWeight: 'bold',
+                            letterSpacing: '-0.02em',
+                            textShadow: '0 2px 10px rgba(0,0,0,0.1)'
+                        }}>
+                            {university} · {program}
+                        </h1>
                     </div>
-                )}
+                    {isConnected && (
+                        <button
+                            onClick={endSession}
+                            style={{
+                                padding: '0.75rem 2rem',
+                                fontSize: '0.875rem',
+                                fontWeight: '600',
+                                color: '#fff',
+                                background: 'rgba(255,255,255,0.2)',
+                                border: '2px solid rgba(255,255,255,0.3)',
+                                borderRadius: '12px',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                backdropFilter: 'blur(10px)'
+                            }}
+                            onMouseOver={(e) => {
+                                e.currentTarget.style.background = 'rgba(239,68,68,0.9)';
+                                e.currentTarget.style.borderColor = '#ef4444';
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                            }}
+                            onMouseOut={(e) => {
+                                e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = 'none';
+                            }}
+                        >
+                            End Interview
+                        </button>
+                    )}
+                </div>
+
+                {/* Status Bar */}
+                <div style={{
+                    padding: '1rem 2rem',
+                    background: 'rgba(0,0,0,0.1)',
+                    backdropFilter: 'blur(10px)',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    position: 'relative',
+                    zIndex: 10
+                }}>
+                    <div style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        background: isConnected ? '#10b981' : 'rgba(255,255,255,0.3)',
+                        boxShadow: isConnected ? '0 0 12px #10b981' : 'none',
+                        animation: isConnected ? 'pulse 2s infinite' : 'none'
+                    }} />
+                    <div style={{
+                        fontSize: '0.875rem',
+                        color: 'rgba(255,255,255,0.9)',
+                        fontWeight: '500'
+                    }}>
+                        {status}
+                    </div>
+                </div>
+
+                {/* Main Content with Avatar and Controls */}
+                <div style={{
+                    flex: 1,
+                    display: 'flex',
+                    gap: '2rem',
+                    padding: '2rem',
+                    position: 'relative',
+                    zIndex: 1
+                }}>
+                    {/* Avatar Section - Left Side */}
+                    <div style={{
+                        flex: '0 0 500px',
+                        height: '600px',
+                        background: 'rgba(0,0,0,0.2)',
+                        backdropFilter: 'blur(10px)',
+                        borderRadius: '20px',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        overflow: 'hidden',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+                    }}>
+                        <ReadyPlayerMeAvatar onAvatarReady={handleAvatarReady} />
+                    </div>
+
+                    {/* Controls and Transcript - Right Side */}
+                    <div style={{
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '2rem',
+                        overflowY: 'auto',
+                        maxHeight: '600px'
+                    }}>
+                        {isConnected && (
+                            <>
+                                {/* Voice Control */}
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    gap: '2rem'
+                                }}>
+                                    <button
+                                        onClick={toggleListening}
+                                        style={{
+                                            width: '100px',
+                                            height: '100px',
+                                            borderRadius: '50%',
+                                            background: isListening
+                                                ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                                : 'rgba(255,255,255,0.2)',
+                                            border: `3px solid ${isListening ? '#10b981' : 'rgba(255,255,255,0.3)'}`,
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontSize: '2.5rem',
+                                            transition: 'all 0.3s ease',
+                                            boxShadow: isListening ? '0 0 40px rgba(16, 185, 129, 0.6), 0 8px 20px rgba(0,0,0,0.2)' : '0 4px 15px rgba(0,0,0,0.2)',
+                                            position: 'relative',
+                                            backdropFilter: 'blur(10px)',
+                                            animation: isListening ? 'float 3s ease-in-out infinite' : 'none'
+                                        }}
+                                        onMouseOver={(e) => {
+                                            e.currentTarget.style.transform = 'scale(1.05)';
+                                        }}
+                                        onMouseOut={(e) => {
+                                            e.currentTarget.style.transform = 'scale(1)';
+                                        }}
+                                    >
+                                        <span>🎤</span>
+                                        {isListening && (
+                                            <>
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    borderRadius: '50%',
+                                                    border: '3px solid #10b981',
+                                                    animation: 'pulse 2s infinite'
+                                                }} />
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    width: '110%',
+                                                    height: '110%',
+                                                    borderRadius: '50%',
+                                                    border: '2px solid #10b981',
+                                                    animation: 'pulse 2s infinite',
+                                                    animationDelay: '0.5s'
+                                                }} />
+                                            </>
+                                        )}
+                                    </button>
+                                    {transcript && (
+                                        <div style={{
+                                            padding: '1.5rem 2rem',
+                                            background: 'rgba(255,255,255,0.15)',
+                                            backdropFilter: 'blur(10px)',
+                                            borderRadius: '16px',
+                                            border: '1px solid rgba(255,255,255,0.2)',
+                                            fontSize: '1.1rem',
+                                            color: '#fff',
+                                            fontStyle: 'italic',
+                                            textAlign: 'center',
+                                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                            width: '100%'
+                                        }}>
+                                            "{transcript}"
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Text Input */}
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={inputText}
+                                        onChange={(e) => setInputText(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && sendTextMessage()}
+                                        placeholder="Or type your response here..."
+                                        style={{
+                                            width: '100%',
+                                            padding: '1rem 1.5rem',
+                                            fontSize: '1rem',
+                                            color: '#fff',
+                                            background: 'rgba(255,255,255,0.1)',
+                                            border: '2px solid rgba(255,255,255,0.2)',
+                                            borderRadius: '12px',
+                                            outline: 'none',
+                                            backdropFilter: 'blur(10px)',
+                                            transition: 'all 0.3s ease'
+                                        }}
+                                        onFocus={(e) => {
+                                            e.target.style.background = 'rgba(255,255,255,0.15)';
+                                            e.target.style.borderColor = 'rgba(255,255,255,0.4)';
+                                        }}
+                                        onBlur={(e) => {
+                                            e.target.style.background = 'rgba(255,255,255,0.1)';
+                                            e.target.style.borderColor = 'rgba(255,255,255,0.2)';
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        )}
+
+                        {/* Conversation */}
+                        {(messages.length > 0 || currentInterviewerMessage) && (
+                            <div>
+                                <div style={{
+                                    fontSize: '0.875rem',
+                                    letterSpacing: '0.1em',
+                                    textTransform: 'uppercase',
+                                    color: 'rgba(255,255,255,0.7)',
+                                    marginBottom: '1.5rem',
+                                    fontWeight: '600'
+                                }}>
+                                    Conversation
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    {messages.map((msg, idx) => (
+                                        <div
+                                            key={idx}
+                                            style={{
+                                                padding: '1rem 1.5rem',
+                                                background: msg.role === 'user'
+                                                    ? 'rgba(59,130,246,0.15)'
+                                                    : 'rgba(147,51,234,0.15)',
+                                                backdropFilter: 'blur(10px)',
+                                                borderRadius: '12px',
+                                                border: `1px solid ${msg.role === 'user' ? 'rgba(59,130,246,0.3)' : 'rgba(147,51,234,0.3)'}`,
+                                                fontSize: '0.95rem',
+                                                lineHeight: '1.6'
+                                            }}
+                                        >
+                                            <div style={{
+                                                fontSize: '0.7rem',
+                                                color: 'rgba(255,255,255,0.6)',
+                                                marginBottom: '0.5rem',
+                                                letterSpacing: '0.1em',
+                                                fontWeight: '600',
+                                                textTransform: 'uppercase'
+                                            }}>
+                                                {msg.role === 'user' ? 'You' : 'Interviewer'}
+                                            </div>
+                                            {msg.content}
+                                        </div>
+                                    ))}
+                                    {currentInterviewerMessage && (
+                                        <div style={{
+                                            padding: '1rem 1.5rem',
+                                            background: 'rgba(147,51,234,0.2)',
+                                            backdropFilter: 'blur(10px)',
+                                            borderRadius: '12px',
+                                            border: '1px solid rgba(147,51,234,0.4)',
+                                            fontSize: '0.95rem',
+                                            lineHeight: '1.6'
+                                        }}>
+                                            <div style={{
+                                                fontSize: '0.7rem',
+                                                color: 'rgba(255,255,255,0.6)',
+                                                marginBottom: '0.5rem',
+                                                letterSpacing: '0.1em',
+                                                fontWeight: '600',
+                                                textTransform: 'uppercase'
+                                            }}>
+                                                Interviewer
+                                            </div>
+                                            {currentInterviewerMessage}
+                                            <span style={{
+                                                display: 'inline-block',
+                                                width: '2px',
+                                                height: '1.2em',
+                                                background: '#10b981',
+                                                marginLeft: '4px',
+                                                animation: 'blink 1s infinite',
+                                                verticalAlign: 'middle'
+                                            }} />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
-        </div>
         </>
     );
 }
