@@ -1,3 +1,4 @@
 {
-  "/api/saveInterviewData/route": "app/api/saveInterviewData/route.js"
+  "/page": "app/page.js",
+  "/interview/page": "app/interview/page.js"
 }

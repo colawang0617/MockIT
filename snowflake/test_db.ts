@@ -1,5 +1,5 @@
-import { createUser, getUserByEmail } from './snowflake/lib/db/users';
-import { savePortfolio } from './snowflake/lib/db/portfolios';
+import { createUser, getUserByEmail } from './lib/db/users';
+import { savePortfolio } from './lib/db/portfolios';
 import 'dotenv/config';
 
 async function testSnowflake() {
