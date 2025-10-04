@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { executeQuery } from '../../lib/snowflake';
+import { executeQuery } from '../snowflake';
 
 export async function createUser(email: string, name: string, passwordHash: string) {
     const userId = uuid();

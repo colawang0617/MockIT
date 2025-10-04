@@ -1,4 +1,4 @@
-import { textToSpeechAudio } from "./textToSpeechAudio.mts";
+import { textToSpeechAudio } from "./textToSpeechAudio.mjs";
 import { readFileSync } from 'fs';
 
 const tt = readFileSync ('./testingText/short.txt', 'utf-8');
