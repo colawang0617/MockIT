@@ -1,0 +1,15 @@
+import { textToSpeechAudio } from "./textToSpeechAudio.mjs";
+import { readFileSync } from 'fs';
+
+const tt = readFileSync ('./testingText/short.txt', 'utf-8');
+
+async function main() {
+    try{
+        const fileName = await textToSpeechAudio(tt);
+        console.log(`Audio created: ${fileName}`);
+    } catch(error){
+        console.error(`Error:`,error);
+    }
+}
+
+main();

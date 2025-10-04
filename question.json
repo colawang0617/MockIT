@@ -1,0 +1,378 @@
+[
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about yourself.",
+    "category": "personal",
+    "difficulty_level": 1,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What three words would your friends use to describe you?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What is your greatest strength and weakness?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What book has influenced you the most?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How would you describe your learning style?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What do you do for fun outside of school?",
+    "category": "personal",
+    "difficulty_level": 1,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What accomplishment are you most proud of?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How do you handle stress or pressure?",
+    "category": "personal",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Why are you interested in this field of study?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What sparked your interest in this major?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Why do you want to attend our university?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What do you hope to gain from your college experience?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What makes you a good fit for this program?",
+    "category": "motivation",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What specific courses or opportunities at our school excite you most?",
+    "category": "motivation",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How will you contribute to our campus community?",
+    "category": "motivation",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What other schools are you considering and why?",
+    "category": "motivation",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a time you faced a significant challenge.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you worked in a team.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a leadership experience.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you failed and what you learned.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a situation where you had to work with someone difficult.",
+    "category": "behavioral",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you had to make a difficult decision.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a time you stepped outside your comfort zone.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you had to manage competing priorities.",
+    "category": "behavioral",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a time you helped resolve a conflict.",
+    "category": "behavioral",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you showed initiative.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What are your career goals?",
+    "category": "future_goals",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Where do you see yourself in 10 years?",
+    "category": "future_goals",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How do you plan to make an impact in your field?",
+    "category": "future_goals",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What problem in the world would you most like to solve?",
+    "category": "future_goals",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How will your education here help you achieve your goals?",
+    "category": "future_goals",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What kind of legacy do you want to leave?",
+    "category": "future_goals",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "STEM",
+    "question_text": "Tell me about a technical project you've worked on.",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Computer Science",
+    "question_text": "What programming languages are you familiar with and what have you built?",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Engineering",
+    "question_text": "Describe an engineering challenge you've tackled.",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "STEM",
+    "question_text": "What current scientific or technological development excites you most?",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "STEM",
+    "question_text": "How do you approach problem-solving in technical contexts?",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "Business",
+    "question_text": "What business leader do you admire and why?",
+    "category": "academic",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Economics",
+    "question_text": "What economic issue concerns you most and how would you address it?",
+    "category": "academic",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Business",
+    "question_text": "Describe an entrepreneurial or business experience you've had.",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "MIT",
+    "program": "All",
+    "question_text": "How do you plan to take advantage of MIT's hands-on approach to learning?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "MIT",
+    "program": "Engineering",
+    "question_text": "How would you contribute to MIT's maker culture?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  
+  {
+    "university": "Stanford",
+    "program": "All",
+    "question_text": "How would Stanford's interdisciplinary approach benefit your education?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Stanford",
+    "program": "Engineering",
+    "question_text": "How do you see yourself using Stanford's d.school resources?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  
+  {
+    "university": "Harvard",
+    "program": "All",
+    "question_text": "How would you take advantage of Harvard's house system?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Harvard",
+    "program": "All",
+    "question_text": "What does veritas (truth) mean to you in the context of your education?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  }
+]
