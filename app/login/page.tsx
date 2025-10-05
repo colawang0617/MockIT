@@ -212,7 +212,7 @@ export default function LoginPage() {
                         backgroundClip: 'text',
                         lineHeight: '1'
                     }}>
-                        MockIT
+                        Nopiro
                     </h1>
                     <p style={{
                         color: 'rgba(255,255,255,0.95)',

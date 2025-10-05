@@ -200,7 +200,7 @@ export default function LoginPage() {
                 {/* Branding */}
                 <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
                     <h1 style={{
-                        fontSize: '4rem',
+                        fontSize: '5rem',
                         fontWeight: '900',
                         color: '#ffffff',
                         margin: '0 0 1rem 0',
@@ -212,7 +212,7 @@ export default function LoginPage() {
                         backgroundClip: 'text',
                         lineHeight: '1'
                     }}>
-                        MockIT
+                        Nopiro
                     </h1>
                     <p style={{
                         color: 'rgba(255,255,255,0.95)',
