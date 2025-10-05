@@ -1,19 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function SetupPage() {
     const [university, setUniversity] = useState('');
     const [program, setProgram] = useState('');
+    const [duration, setDuration] = useState<number>(10); // Default 10 minutes
     const [focused, setFocused] = useState<string | null>(null);
+    const [userEmail, setUserEmail] = useState<string>('');
     const router = useRouter();
+
+    // Check if user is logged in
+    useEffect(() => {
+        const email = localStorage.getItem('userEmail');
+        if (!email) {
+            // Redirect to login if not authenticated
+            router.push('/login');
+        } else {
+            setUserEmail(email);
+        }
+    }, [router]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userId');
+        router.push('/login');
+    };
 
     const startInterview = () => {
         if (!university.trim() || !program.trim()) {
             return;
         }
-        router.push(`/interview?university=${encodeURIComponent(university)}&program=${encodeURIComponent(program)}`);
+        router.push(`/prepare?university=${encodeURIComponent(university)}&program=${encodeURIComponent(program)}&duration=${duration}`);
     };
 
     return (
@@ -56,6 +75,49 @@ export default function SetupPage() {
                 position: 'relative',
                 zIndex: 1
             }}>
+                {/* User Info & Logout */}
+                {userEmail && (
+                    <div style={{
+                        marginBottom: '2rem',
+                        textAlign: 'center',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        background: 'rgba(255,255,255,0.1)',
+                        padding: '0.75rem 1.5rem',
+                        borderRadius: '12px',
+                        backdropFilter: 'blur(10px)'
+                    }}>
+                        <span style={{
+                            color: 'rgba(255,255,255,0.9)',
+                            fontSize: '0.9rem'
+                        }}>
+                            👤 {userEmail}
+                        </span>
+                        <button
+                            onClick={handleLogout}
+                            style={{
+                                padding: '0.5rem 1rem',
+                                fontSize: '0.85rem',
+                                color: '#fff',
+                                background: 'rgba(255,255,255,0.2)',
+                                border: '1px solid rgba(255,255,255,0.3)',
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onMouseOver={(e) => {
+                                e.currentTarget.style.background = 'rgba(239,68,68,0.8)';
+                            }}
+                            onMouseOut={(e) => {
+                                e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                            }}
+                        >
+                            Logout
+                        </button>
+                    </div>
+                )}
+
                 {/* Title */}
                 <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
                     <h1 style={{
@@ -119,7 +181,7 @@ export default function SetupPage() {
                     </div>
 
                     {/* Program Input */}
-                    <div style={{ marginBottom: '2rem' }}>
+                    <div style={{ marginBottom: '1.5rem' }}>
                         <label style={{
                             display: 'block',
                             marginBottom: '0.5rem',
@@ -150,6 +212,68 @@ export default function SetupPage() {
                                 boxShadow: focused === 'prog' ? '0 0 0 3px rgba(102,126,234,0.1)' : 'none'
                             }}
                         />
+                    </div>
+
+                    {/* Duration Selection */}
+                    <div style={{ marginBottom: '2rem' }}>
+                        <label style={{
+                            display: 'block',
+                            marginBottom: '0.5rem',
+                            color: '#4a5568',
+                            fontSize: '0.875rem',
+                            fontWeight: '600'
+                        }}>
+                            Interview Duration
+                        </label>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 1fr)',
+                            gap: '0.75rem'
+                        }}>
+                            {[2, 10, 30].map((mins) => (
+                                <button
+                                    key={mins}
+                                    onClick={() => setDuration(mins)}
+                                    style={{
+                                        padding: '1rem',
+                                        fontSize: '0.875rem',
+                                        fontWeight: '600',
+                                        color: duration === mins ? '#fff' : '#4a5568',
+                                        background: duration === mins
+                                            ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                                            : '#ffffff',
+                                        border: `2px solid ${duration === mins ? '#667eea' : '#e2e8f0'}`,
+                                        borderRadius: '12px',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        boxShadow: duration === mins ? '0 4px 12px rgba(102,126,234,0.3)' : 'none'
+                                    }}
+                                    onMouseOver={(e) => {
+                                        if (duration !== mins) {
+                                            e.currentTarget.style.borderColor = '#667eea';
+                                            e.currentTarget.style.background = 'rgba(102,126,234,0.05)';
+                                        }
+                                    }}
+                                    onMouseOut={(e) => {
+                                        if (duration !== mins) {
+                                            e.currentTarget.style.borderColor = '#e2e8f0';
+                                            e.currentTarget.style.background = '#ffffff';
+                                        }
+                                    }}
+                                >
+                                    {mins} min{mins > 1 ? 's' : ''}
+                                </button>
+                            ))}
+                        </div>
+                        <p style={{
+                            marginTop: '0.5rem',
+                            fontSize: '0.75rem',
+                            color: '#a0aec0'
+                        }}>
+                            {duration === 2 && '1-2 questions · Quick practice'}
+                            {duration === 10 && '3-5 questions · Standard interview'}
+                            {duration === 30 && '8-10 questions · Comprehensive session'}
+                        </p>
                     </div>
 
                     {/* Start Button */}

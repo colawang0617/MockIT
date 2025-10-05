@@ -8,6 +8,7 @@ export default function InterviewPage() {
     const searchParams = useSearchParams();
     const university = searchParams.get('university') || 'General';
     const program = searchParams.get('program') || 'All';
+    const duration = parseInt(searchParams.get('duration') || '10');
 
     const [isConnected, setIsConnected] = useState(false);
     const [sessionId, setSessionId] = useState<string | null>(null);
@@ -17,13 +18,17 @@ export default function InterviewPage() {
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState('');
     const [currentInterviewerMessage, setCurrentInterviewerMessage] = useState('');
-    
+    const [timeRemaining, setTimeRemaining] = useState(duration * 60); // Convert minutes to seconds
+    const [showEndPage, setShowEndPage] = useState(false);
+
     const wsRef = useRef<WebSocket | null>(null);
     const recognitionRef = useRef<any>(null);
     const audioContextRef = useRef<AudioContext | null>(null);
     const currentAudioSourceRef = useRef<AudioBufferSourceNode | null>(null);
     const hasAutoStarted = useRef(false);
     const avatarControlsRef = useRef<AvatarControls | null>(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const [cameraEnabled, setCameraEnabled] = useState(false);
 
     // Handle avatar ready
     const handleAvatarReady = (controls: AvatarControls) => {
@@ -121,12 +126,13 @@ export default function InterviewPage() {
             setIsConnected(true);
             setStatus('Connected - Initializing session...');
 
-            // Initialize session with university and program
+            // Initialize session with university, program, and duration
             ws.send(JSON.stringify({
                 type: 'init',
                 userId: 'test_user',
                 university: university,
-                program: program
+                program: program,
+                duration: duration
             }));
         };
 
@@ -212,7 +218,14 @@ export default function InterviewPage() {
                             if (avatarControlsRef.current) {
                                 // Avatar will handle the audio playback
                                 await avatarControlsRef.current.playAudio(audioUrl);
-                                
+
+                                // Notify server that audio ended
+                                if (wsRef.current) {
+                                    wsRef.current.send(JSON.stringify({
+                                        type: 'audio_ended'
+                                    }));
+                                }
+
                                 // Clean up blob URL after audio ends
                                 setTimeout(() => {
                                     URL.revokeObjectURL(audioUrl);
@@ -236,6 +249,13 @@ export default function InterviewPage() {
                                     currentAudioSourceRef.current = null;
                                     setStatus('Ready - Your turn');
                                     URL.revokeObjectURL(audioUrl);
+
+                                    // Notify server that audio ended
+                                    if (wsRef.current) {
+                                        wsRef.current.send(JSON.stringify({
+                                            type: 'audio_ended'
+                                        }));
+                                    }
                                 };
                             }
 
@@ -284,15 +304,67 @@ export default function InterviewPage() {
         wsRef.current = ws;
     };
 
+    // Countdown timer
+    useEffect(() => {
+        if (!isConnected || timeRemaining <= 0) return;
+
+        const timer = setInterval(() => {
+            setTimeRemaining(prev => {
+                if (prev <= 1) {
+                    // Timer expired - wait 15 seconds then show end page
+                    setTimeout(() => {
+                        setShowEndPage(true);
+                    }, 15000);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [isConnected, timeRemaining]);
+
+    // Redirect to complete page when showEndPage is true
+    useEffect(() => {
+        if (showEndPage) {
+            window.location.href = '/complete';
+        }
+    }, [showEndPage]);
+
     // Auto-connect on mount
     useEffect(() => {
         if (!hasAutoStarted.current) {
             hasAutoStarted.current = true;
             setTimeout(() => {
                 connectWebSocket();
+                // Enable camera
+                enableCamera();
             }, 500);
         }
     }, []);
+
+    // Enable user camera
+    const enableCamera = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    facingMode: 'user'
+                },
+                audio: false // Already using audio for speech recognition
+            });
+
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                setCameraEnabled(true);
+                setStatus('Camera enabled');
+            }
+        } catch (error) {
+            console.error('Camera access error:', error);
+            setStatus('Camera access denied - continuing without video');
+        }
+    };
 
     const sendTextMessage = () => {
         if (!wsRef.current || !inputText.trim()) return;
@@ -333,6 +405,18 @@ export default function InterviewPage() {
         wsRef.current.send(JSON.stringify({
             type: 'end_session'
         }));
+
+        // Redirect to complete page
+        setTimeout(() => {
+            window.location.href = '/complete';
+        }, 500);
+    };
+
+    // Format time remaining
+    const formatTime = (seconds: number) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
     return (
@@ -419,6 +503,38 @@ export default function InterviewPage() {
                             {university} · {program}
                         </h1>
                     </div>
+
+                    {/* Timer Display */}
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                    }}>
+                        <div style={{
+                            fontSize: '0.75rem',
+                            letterSpacing: '0.1em',
+                            textTransform: 'uppercase',
+                            color: 'rgba(255,255,255,0.7)',
+                            fontWeight: '600'
+                        }}>
+                            Time Remaining
+                        </div>
+                        <div style={{
+                            fontSize: '2rem',
+                            fontWeight: 'bold',
+                            color: timeRemaining < 60 ? '#ef4444' : '#ffffff',
+                            fontFamily: 'monospace',
+                            textShadow: '0 2px 10px rgba(0,0,0,0.2)',
+                            padding: '0.5rem 1.5rem',
+                            background: 'rgba(0,0,0,0.2)',
+                            borderRadius: '12px',
+                            border: `2px solid ${timeRemaining < 60 ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.3)'}`,
+                            transition: 'all 0.3s ease'
+                        }}>
+                            {formatTime(timeRemaining)}
+                        </div>
+                    </div>
                     {isConnected && (
                         <button
                             onClick={endSession}
@@ -490,9 +606,10 @@ export default function InterviewPage() {
                     position: 'relative',
                     zIndex: 1
                 }}>
-                    {/* Avatar Section - Left Side */}
+                    {/* Left Side - Avatar and User Camera */}
                     <div style={{
                         flex: '0 0 500px',
+<<<<<<< HEAD
                         height: '800px',
                         background: 'rgba(0,0,0,0.2)',
                         backdropFilter: 'blur(10px)',
@@ -500,8 +617,65 @@ export default function InterviewPage() {
                         border: '1px solid rgba(255,255,255,0.2)',
                         overflow: 'hidden',
                         boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+=======
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem'
+>>>>>>> 20c631dd818eab37cc5484e0f210d8e394708d56
                     }}>
-                        <ReadyPlayerMeAvatar onAvatarReady={handleAvatarReady} />
+                        {/* Avatar Section */}
+                        <div style={{
+                            flex: 1,
+                            background: 'rgba(0,0,0,0.2)',
+                            backdropFilter: 'blur(10px)',
+                            borderRadius: '20px',
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            overflow: 'hidden',
+                            boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+                        }}>
+                            <ReadyPlayerMeAvatar onAvatarReady={handleAvatarReady} />
+                        </div>
+
+                        {/* User Camera */}
+                        <div style={{
+                            flex: 1,
+                            background: 'rgba(0,0,0,0.3)',
+                            backdropFilter: 'blur(10px)',
+                            borderRadius: '16px',
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            overflow: 'hidden',
+                            boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+                            position: 'relative'
+                        }}>
+                            <video
+                                ref={videoRef}
+                                autoPlay
+                                playsInline
+                                muted
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    transform: 'scaleX(-1)' // Mirror effect
+                                }}
+                            />
+                            {!cameraEnabled && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'rgba(255,255,255,0.6)',
+                                    fontSize: '0.875rem'
+                                }}>
+                                    Camera disabled
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Controls and Transcript - Right Side */}

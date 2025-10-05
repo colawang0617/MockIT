@@ -90,8 +90,13 @@ function AvatarModel({ avatarUrl, currentViseme, audioAnalyser }: AvatarModelPro
     <primitive 
       ref={modelRef} 
       object={gltf.scene} 
+<<<<<<< HEAD
       position={[0, -7, 0]} 
       scale={4.5}
+=======
+      position={[0, -6, 0]} 
+      scale={3.5}
+>>>>>>> 20c631dd818eab37cc5484e0f210d8e394708d56
     />
   );
 }
@@ -187,7 +192,11 @@ export default function ReadyPlayerMeAvatar({
   };
 
   return (
+<<<<<<< HEAD
     <div style={{ width: '75%', height: '50%', position: 'relative' }}>
+=======
+    <div style={{ width: '75%', height: '50%', position: 'relative'}}>
+>>>>>>> 20c631dd818eab37cc5484e0f210d8e394708d56
       <Canvas camera={{ position: [0, 0, 2.5], fov: 50 }}>
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
