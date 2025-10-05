@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-// File: /Users/wanghaotai/Desktop/elvenlab/HTV/app/interview/page.tsx
-=======
 // File: C:\Users\matth\Desktop\HTV\app\interview\page.tsx
->>>>>>> Stashed changes
 import * as entry from '../../../../app/interview/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

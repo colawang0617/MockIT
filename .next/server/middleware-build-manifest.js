@@ -2,13 +2,9 @@ globalThis.__BUILD_MANIFEST = {
   "polyfillFiles": [
     "static/chunks/polyfills.js"
   ],
-<<<<<<< Updated upstream
-  "devFiles": [],
-=======
   "devFiles": [
     "static/chunks/react-refresh.js"
   ],
->>>>>>> Stashed changes
   "ampDevFiles": [],
   "lowPriorityFiles": [],
   "rootMainFiles": [
@@ -17,9 +13,6 @@ globalThis.__BUILD_MANIFEST = {
   ],
   "rootMainFilesTree": {},
   "pages": {
-<<<<<<< Updated upstream
-    "/_app": []
-=======
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -30,7 +23,6 @@ globalThis.__BUILD_MANIFEST = {
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ]
->>>>>>> Stashed changes
   },
   "ampFirstPages": []
 };

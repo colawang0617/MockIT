@@ -24,7 +24,7 @@ interface ReadyPlayerMeAvatarProps {
 
 // Enhanced viseme detection based on frequency analysis
 class LipSyncAnalyzer {
-  private dataArray: Uint8Array;
+  private dataArray: Uint8Array<ArrayBuffer>;
   private previousVolume: number = 0;
   private smoothingFactor: number = 0.7;
 
@@ -33,13 +33,13 @@ class LipSyncAnalyzer {
     if (!analyser.fftSize) {
       analyser.fftSize = 512;
     }
-    this.dataArray = new Uint8Array(analyser.frequencyBinCount);
+    this.dataArray = new Uint8Array(new ArrayBuffer(analyser.frequencyBinCount));
   }
 
   analyze(): { viseme: string; weight: number } {
     // Recreate array if size changed
     if (this.dataArray.length !== this.analyser.frequencyBinCount) {
-      this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+      this.dataArray = new Uint8Array(new ArrayBuffer(this.analyser.frequencyBinCount));
     }
     this.analyser.getByteFrequencyData(this.dataArray);
 
@@ -330,8 +330,10 @@ export default function ReadyPlayerMeAvatar({
   };
 
   return (
-    <div style={{ width: '75%', height: '90%', position: 'relative' }}>
-      <Canvas camera={{ position: [0, 0, 2.5], fov: 45 }}>
+    <div style={{ width: '100%', height: '90%', position: 'relative' ,backgroundImage: 'url("/backgrounds/background2.jpg")', // path to background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',}}>
+      <Canvas camera={{ position: [0, 0, 3.5], fov: 35 }}>
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
         <directionalLight position={[-5, 5, -5]} intensity={0.5} />
