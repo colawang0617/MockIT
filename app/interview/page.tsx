@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ReadyPlayerMeAvatar, { AvatarControls } from './ReadyPlayerMeAvatar';
 
-export default function InterviewPage() {
+function InterviewPageContent() {
     const searchParams = useSearchParams();
     const university = searchParams.get('university') || 'General';
     const program = searchParams.get('program') || 'All';
@@ -976,5 +976,24 @@ export default function InterviewPage() {
                 </div>
             </div>
         </>
+    );
+}
+
+export default function InterviewPage() {
+    return (
+        <Suspense fallback={
+            <div style={{
+                height: '100vh',
+                width: '100vw',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            }}>
+                <div style={{ color: 'white', fontSize: '1.5rem' }}>Loading interview...</div>
+            </div>
+        }>
+            <InterviewPageContent />
+        </Suspense>
     );
 }

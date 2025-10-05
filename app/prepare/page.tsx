@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function PreparePage() {
+function PreparePageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const university = searchParams.get('university') || 'General';
@@ -231,5 +231,24 @@ export default function PreparePage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function PreparePage() {
+    return (
+        <Suspense fallback={
+            <div style={{
+                height: '100vh',
+                width: '100vw',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            }}>
+                <div style={{ color: 'white', fontSize: '1.5rem' }}>Loading...</div>
+            </div>
+        }>
+            <PreparePageContent />
+        </Suspense>
     );
 }
