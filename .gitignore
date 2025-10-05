@@ -1,15 +1,10 @@
-node_modules
+node_modules/
+.next/
 .env
+*.log
+
 
 # Temporary audio files
 temp_audio/
 *.mp3
 
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
-# clerk configuration (can include secrets)
-/.clerk/

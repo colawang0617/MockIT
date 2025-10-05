@@ -15,8 +15,9 @@
     "ws": "^8.18.3"
   },
   "scripts": {
-    "dev": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true && tsx server/index.ts",
-    "dev:next": "next dev"
+      "dev": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true && tsx server/index.ts",
+      "build": "next build",
+      "start": "NODE_ENV=production tsx server/index.ts"
   },
   "devDependencies": {
     "@types/react": "19.2.0",
