@@ -1,0 +1,6 @@
+{
+  "/complete/page": "app/complete/page.js",
+  "/page": "app/page.js",
+  "/interview/page": "app/interview/page.js",
+  "/prepare/page": "app/prepare/page.js"
+}

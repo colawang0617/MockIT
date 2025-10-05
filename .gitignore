@@ -1,5 +1,9 @@
 node_modules
 
+# Temporary audio files
+temp_audio/
+*.mp3
+
 # Playwright
 /test-results/
 /playwright-report/

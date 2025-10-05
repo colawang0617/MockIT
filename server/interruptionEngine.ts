@@ -22,12 +22,12 @@ export async function analyzeForInterruption(
 
     // More natural heuristics - require stronger signals before interrupting
     const wordCount = userText.split(' ').length;
-    const hasLongPause = speechDuration > 4000; // 4 seconds of silence (increased from 3)
-    const isTooLong = wordCount > 150; // Increased from 100 - allow longer responses
+    const hasLongPause = speechDuration > 5000; // 5 seconds of silence (increased for more natural conversation)
+    const isTooLong = wordCount > 200; // Increased from 150 - allow even longer responses
     const isVague = hasVagueIndicators(userText);
 
-    // Don't interrupt too quickly - require at least 15 words
-    if (wordCount < 15) {
+    // Don't interrupt too quickly - require at least 20 words
+    if (wordCount < 20) {
         return { shouldInterrupt: false, reason: 'none' };
     }
 

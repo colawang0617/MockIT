@@ -3,6 +3,7 @@ import 'dotenv/config';
 import {createWriteStream} from 'fs';
 import {v4 as uuid} from 'uuid';
 import { Readable } from 'stream';
+import { getTempAudioPath } from '../server/voiceFileManager';
 
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
@@ -79,13 +80,14 @@ export const textToSpeechAudio = async (text: string): Promise<string> => {
                 },
             });
             const fileName = `${uuid()}.mp3`;
-            const fileStream = createWriteStream(fileName);
+            const filePath = getTempAudioPath(fileName);
+            const fileStream = createWriteStream(filePath);
 
             const nodeAudioStream = Readable.fromWeb(audio as any);
 
             nodeAudioStream.pipe(fileStream);
 
-            fileStream.on('finish', () => resolve(fileName));
+            fileStream.on('finish', () => resolve(filePath));
             fileStream.on('error', reject);
         } catch (error) {
             reject(error);

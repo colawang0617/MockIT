@@ -19,6 +19,12 @@ export interface InterviewSession {
         timestamp: Date;
     }>;
     speechTracker: SpeechTracker;
+    isAISpeaking: boolean; // Track if AI is currently speaking
+    duration: number; // Interview duration in minutes
+    maxQuestions: number; // Maximum questions based on duration
+    questionsAsked: number; // Track how many main questions asked
+    startTime: Date; // Interview start time
+    hasWarmup: boolean; // Whether to include warmup
 }
 
 const sessions = new Map<string, InterviewSession>();
@@ -44,6 +50,21 @@ export function setupWebSocketServer(server: HTTPServer) {
                         sessionId = message.sessionId || `session_${Date.now()}`;
                         const targetUniversity = message.university || 'General';
                         const targetProgram = message.program || 'All';
+                        const duration = message.duration || 10; // Default 10 minutes
+
+                        // Calculate max questions based on duration
+                        let maxQuestions = 3;
+                        let hasWarmup = false;
+                        if (duration === 2) {
+                            maxQuestions = 2;
+                            hasWarmup = false;
+                        } else if (duration === 10) {
+                            maxQuestions = 5;
+                            hasWarmup = true;
+                        } else if (duration === 30) {
+                            maxQuestions = 10;
+                            hasWarmup = true;
+                        }
 
                         const questionBank = new QuestionBank(targetUniversity, targetProgram);
 
@@ -55,7 +76,13 @@ export function setupWebSocketServer(server: HTTPServer) {
                             questionBank,
                             currentDifficulty: 1,
                             conversationHistory: [],
-                            speechTracker: new SpeechTracker()
+                            speechTracker: new SpeechTracker(),
+                            isAISpeaking: false,
+                            duration,
+                            maxQuestions,
+                            questionsAsked: 0,
+                            startTime: new Date(),
+                            hasWarmup
                         });
 
                         ws.send(JSON.stringify({
@@ -63,13 +90,22 @@ export function setupWebSocketServer(server: HTTPServer) {
                             sessionId,
                             message: 'Interview session initialized'
                         }));
-                        console.log(`Session initialized: ${sessionId} for ${targetUniversity} - ${targetProgram}`);
+                        console.log(`Session initialized: ${sessionId} for ${targetUniversity} - ${targetProgram} (${duration} mins, max ${maxQuestions} questions)`);
 
-                        // Get first question from question bank
-                        const firstQuestion = questionBank.getOpeningQuestion();
-                        const greeting = `Hi! Thanks for taking the time to interview for ${targetProgram} at ${targetUniversity}. Let's get started. ${firstQuestion.question_text}`;
-
+                        // Create greeting based on duration
                         const currentSession = sessions.get(sessionId)!;
+                        let greeting: string;
+
+                        if (hasWarmup) {
+                            // For 10min+ interviews, start with warmup
+                            greeting = `Hi! Thanks for taking the time to interview for ${targetProgram} at ${targetUniversity}. Before we dive into the formal questions, I'd love to get to know you a bit. How are you doing today?`;
+                        } else {
+                            // For short interviews, jump straight to questions
+                            const firstQuestion = questionBank.getOpeningQuestion();
+                            greeting = `Hi! Thanks for taking the time to chat about ${targetProgram} at ${targetUniversity}. Let's get started. ${firstQuestion.question_text}`;
+                            currentSession.questionsAsked = 1;
+                        }
+
                         currentSession.conversationHistory.push({
                             role: 'interviewer',
                             content: greeting,
@@ -89,13 +125,19 @@ export function setupWebSocketServer(server: HTTPServer) {
 
                         // Generate audio in background
                         try {
+                            currentSession.isAISpeaking = true;
                             const base64Audio = await generateVoiceAudio(greeting);
                             ws.send(JSON.stringify({
                                 type: 'interviewer_audio',
                                 audio: base64Audio
                             }));
+                            // Mark AI as finished speaking after sending audio
+                            setTimeout(() => {
+                                currentSession.isAISpeaking = false;
+                            }, 100); // Small delay to ensure audio starts playing
                         } catch (error) {
                             console.error('TTS error:', error);
+                            currentSession.isAISpeaking = false;
                         }
                         break;
 
@@ -125,6 +167,16 @@ export function setupWebSocketServer(server: HTTPServer) {
 
                         const interimSession = sessions.get(sessionId);
                         if (interimSession) {
+                            // Prevent user from speaking while AI is talking
+                            if (interimSession.isAISpeaking) {
+                                // Notify client to pause speech recognition
+                                ws.send(JSON.stringify({
+                                    type: 'pause_listening',
+                                    message: 'Please wait for the interviewer to finish speaking'
+                                }));
+                                return;
+                            }
+
                             const interimText = message.text;
                             const speechDuration = interimSession.speechTracker.getSpeechDuration();
 
@@ -160,13 +212,19 @@ export function setupWebSocketServer(server: HTTPServer) {
 
                                 // Generate audio
                                 try {
+                                    interimSession.isAISpeaking = true;
                                     const base64Audio = await generateVoiceAudio(interruption.interruptionText);
                                     ws.send(JSON.stringify({
                                         type: 'interviewer_audio',
                                         audio: base64Audio
                                     }));
+                                    // Mark AI as finished speaking after sending audio
+                                    setTimeout(() => {
+                                        interimSession.isAISpeaking = false;
+                                    }, 100);
                                 } catch (error) {
                                     console.error('TTS error during interruption:', error);
+                                    interimSession.isAISpeaking = false;
                                 }
 
                                 // Reset speech tracker
@@ -187,6 +245,15 @@ export function setupWebSocketServer(server: HTTPServer) {
 
                         const session = sessions.get(sessionId);
                         if (session) {
+                            // Prevent user from sending text while AI is speaking
+                            if (session.isAISpeaking) {
+                                ws.send(JSON.stringify({
+                                    type: 'error',
+                                    message: 'Please wait for the interviewer to finish speaking'
+                                }));
+                                return;
+                            }
+
                             const userText = message.text.trim();
 
                             // Update speech tracker
@@ -201,6 +268,10 @@ export function setupWebSocketServer(server: HTTPServer) {
                             });
 
                             console.log(`User: ${userText}`);
+
+                            // Check if interview should end
+                            const timeElapsed = (Date.now() - session.startTime.getTime()) / 1000 / 60;
+                            const shouldEndNow = session.questionsAsked >= session.maxQuestions || timeElapsed >= session.duration;
 
                             // Generate AI response with streaming
                             let fullResponse = '';
@@ -243,20 +314,69 @@ export function setupWebSocketServer(server: HTTPServer) {
 
                                 // Generate audio
                                 console.log('Generating audio...');
+                                session.isAISpeaking = true;
                                 const base64Audio = await generateVoiceAudio(fullResponse);
                                 ws.send(JSON.stringify({
                                     type: 'interviewer_audio',
                                     audio: base64Audio
                                 }));
                                 console.log('Audio sent');
+                                // Mark AI as finished speaking after sending audio
+                                setTimeout(() => {
+                                    session.isAISpeaking = false;
+                                }, 100);
+
+                                // Check if response contains a new question (increment counter)
+                                if (fullResponse.includes('?') && !shouldEndNow) {
+                                    session.questionsAsked++;
+                                    console.log(`Questions asked: ${session.questionsAsked}/${session.maxQuestions}`);
+                                }
+
+                                // Auto-end session if limits reached
+                                if (shouldEndNow) {
+                                    console.log('Interview limits reached, ending session...');
+                                    setTimeout(async () => {
+                                        // Save session
+                                        try {
+                                            await saveCompleteInterviewSession(
+                                                sessionId!,
+                                                session.userId,
+                                                session.targetUniversity,
+                                                session.targetProgram,
+                                                session.conversationHistory
+                                            );
+                                            console.log('✅ Session saved to Snowflake');
+                                        } catch (error) {
+                                            console.error('❌ Failed to save session to Snowflake:', error);
+                                        }
+
+                                        sessions.delete(sessionId!);
+                                        ws.send(JSON.stringify({
+                                            type: 'session_ended',
+                                            message: 'Interview completed'
+                                        }));
+                                    }, 3000); // Wait 3 seconds after final message
+                                }
                             } catch (error) {
                                 console.error('Response generation error:', error);
                                 console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+                                session.isAISpeaking = false;
                                 ws.send(JSON.stringify({
                                     type: 'error',
                                     message: error instanceof Error ? error.message : 'Failed to generate response'
                                 }));
                             }
+                        }
+                        break;
+
+                    case 'audio_ended':
+                        // Client notifies when audio playback ends
+                        if (!sessionId) return;
+
+                        const audioSession = sessions.get(sessionId);
+                        if (audioSession) {
+                            audioSession.isAISpeaking = false;
+                            console.log('Audio playback ended, user can speak now');
                         }
                         break;
 
