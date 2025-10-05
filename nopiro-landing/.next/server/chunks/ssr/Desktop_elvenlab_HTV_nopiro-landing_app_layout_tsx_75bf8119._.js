@@ -1,0 +1,3 @@
+module.exports=[15551,a=>{"use strict";a.s(["default",()=>d,"metadata",()=>c]);var b=a.i(45821);let c={title:"Nopiro - Master Your College Interview",description:"AI-powered interview preparation"};function d({children:a}){return(0,b.jsxs)("html",{lang:"en",children:[(0,b.jsx)("head",{children:(0,b.jsx)("script",{src:"https://cdn.tailwindcss.com"})}),(0,b.jsx)("body",{children:a})]})}}];
+
+//# sourceMappingURL=Desktop_elvenlab_HTV_nopiro-landing_app_layout_tsx_75bf8119._.js.map
