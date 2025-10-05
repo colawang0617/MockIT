@@ -137,24 +137,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
-// Validate ../../app/api/sync-user/route.ts
-{
-  type __IsExpected<Specific extends RouteHandlerConfig<"/api/sync-user">> = Specific
-  const handler = {} as typeof import("../../app/api/sync-user/route.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
-// Validate ../../app/api/test-sync/route.ts
-{
-  type __IsExpected<Specific extends RouteHandlerConfig<"/api/test-sync">> = Specific
-  const handler = {} as typeof import("../../app/api/test-sync/route.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
 
 
 

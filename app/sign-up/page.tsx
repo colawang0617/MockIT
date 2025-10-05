@@ -1,6 +1,5 @@
 'use client';
 
-import { useSignUp, useUser } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -12,15 +11,14 @@ export default function SignUpPage() {
     const [loading, setLoading] = useState(false);
     const [focused, setFocused] = useState<string | null>(null);
     const router = useRouter();
-    const { signUp, setActive } = useSignUp();
-    const { isSignedIn, isLoaded } = useUser();
 
     // Redirect if already signed in
     useEffect(() => {
-        if (isLoaded && isSignedIn) {
-            router.push('/');
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            router.push('/home');
         }
-    }, [isLoaded, isSignedIn, router]);
+    }, [router]);
 
     const handleSignUp = async () => {
         if (!email.trim() || !password.trim()) {
@@ -38,21 +36,26 @@ export default function SignUpPage() {
         setError('');
 
         try {
-            const result = await signUp?.create({
-                emailAddress: email,
-                password,
-            });
-
-            if (result?.status === 'complete') {
-                await setActive?.({ session: result.createdSessionId });
-                router.push('/');
-            } else if (result?.status === 'missing_requirements') {
-                await result.prepareEmailAddressVerification({ strategy: 'email_code' });
-                setError('Please check your email for verification code');
+            // Check if user already exists
+            const existingUser = localStorage.getItem(email);
+            if (existingUser) {
+                setError('Account already exists with this email');
+                setLoading(false);
+                return;
             }
+
+            // Create new account
+            localStorage.setItem(email, JSON.stringify({ email, password }));
+            localStorage.setItem('currentUser', email);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userId', `user_${Date.now()}`);
+
+            setTimeout(() => {
+                router.push('/home');
+            }, 500);
         } catch (err: any) {
             console.error('Sign up error:', err);
-            setError(err.errors?.[0]?.message || 'Sign up failed. Please try again.');
+            setError('Sign up failed. Please try again.');
         } finally {
             setLoading(false);
         }

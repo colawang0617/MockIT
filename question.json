@@ -814,6 +814,23 @@
     "category": "school_specific",
     "difficulty_level": 4,
     "source": "official_website"
+  },
+  {
+    "university": "University of Waterloo",
+    "program": "Software Engineering",
+    "question_text": "Why do we smell?",
+    "category": "program_specific",
+    "difficulty_level": 4,
+    "source": "social media"
+  },
+  {
+    "university": "University of Waterloo",
+    "program": "Computer Science",
+    "question_text": "Why do we touch grass",
+    "category": "program_specific",
+    "difficulty_level": 4,
+    "source": "social media"
   }
+
 ]
 

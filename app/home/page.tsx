@@ -24,7 +24,8 @@ export default function SetupPage() {
         'University of Texas at Austin', 'Georgia Institute of Technology',
         'Tufts University', 'Boston College', 'Boston University',
         'Rutgers University', 'Indiana University Bloomington',
-        'University of Wisconsin–Madison', 'University of Illinois Urbana–Champaign'
+        'University of Wisconsin–Madison', 'University of Illinois Urbana–Champaign',
+        'University of Waterloo'
     ];
 
     const commonPrograms = [

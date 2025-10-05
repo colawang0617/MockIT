@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { generateAIAnswers } from '@/GeminiAPI/generate';
-import { textToSpeechAudio } from '@/Elevenlabs/textToSpeechAudio';
+import { textToSpeechAudio } from '@/elevenlabs/textToSpeechAudio';
 import { readFile } from 'fs/promises';
 
 export const runtime = 'nodejs';
