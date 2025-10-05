@@ -282,6 +282,25 @@ Lip movement uses **lerp interpolation** between current and target morph weight
 ```ts
 THREE.MathUtils.lerp(currentWeight, targetWeight, 0.2)
 ```
+
+### ⚙️ Getting Started
+Ensure you have a Ready Player Me avatar URL (GLB file).
+Example:
+
+```ts
+const avatarUrl = 'https://models.readyplayer.me/your-avatar-id.glb';
+```
+Place it in the component:
+
+```tsx
+<ReadyPlayerMeAvatar avatarUrl={avatarUrl} />
+```
+To trigger lip sync with an audio file:
+
+```ts
+avatarControls.playAudio('/audio/interview-sample.mp3');
+```
+
 ### Database
 
 #### **Snowflake**
