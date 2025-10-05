@@ -1,6 +1,5 @@
 node_modules
-<<<<<<< HEAD
-=======
+.env
 
 # Temporary audio files
 temp_audio/
@@ -12,4 +11,3 @@ temp_audio/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
->>>>>>> b14ebf74fa5fe34ac85045c4c6ccf1629161e655
