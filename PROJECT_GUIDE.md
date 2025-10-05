@@ -222,6 +222,84 @@ recognition.onresult = (event) => {
 
 recognition.start(); // Start listening
 ```
+## 🧠 Avatar and Lip Sync System
+
+### 🎭 Overview
+This project integrates a **Ready Player Me** 3D avatar into a React + Three.js environment.  
+The avatar visually reacts to audio input — moving its mouth and facial features based on sound frequencies in real time.
+
+The system uses:
+- **React Three Fiber** for rendering 3D models.
+- **Ready Player Me GLB avatars** with blend/morph targets for facial animation.
+- **Web Audio API** for analyzing microphone or audio file signals.
+- A **custom viseme detection algorithm** to drive mouth shapes.
+
+---
+
+### 🧍‍♂️ Avatar Rendering
+
+The component `ReadyPlayerMeAvatar` renders the avatar in a 3D scene:
+
+- Loads Ready Player Me `.glb` model using `GLTFLoader`.
+- Finds all available morph targets (for example: `mouthOpen`, `viseme_aa`, `viseme_O`, etc.).
+- Smoothly interpolates between morph target weights to create realistic movement.
+- Uses ambient, directional, and point lights for realistic shading.
+- Camera and user interaction are handled through `OrbitControls`.
+
+#### Key files:
+- **`ReadyPlayerMeAvatar.tsx`** — main React component.
+- **`AvatarModel`** — handles the 3D model loading and animation logic.
+
+---
+
+### 🗣️ Lip Sync Analyzer
+
+The **LipSyncAnalyzer** class is responsible for "listening" to sound frequencies and mapping them to **visemes** (mouth shapes).
+
+It works by:
+1. Capturing incoming audio through `AnalyserNode` (Web Audio API).
+2. Reading the frequency data into a `Uint8Array`.
+3. Identifying:
+   - Overall volume (amplitude)
+   - Dominant frequency
+   - Spectral centroid (brightness)
+4. Using those values to pick a viseme label (`aa`, `O`, `E`, `SS`, etc.).
+5. Scaling the viseme’s **weight** to drive morph target values on the avatar.
+
+#### Example mapping:
+
+| Detected Viseme | Approx. Mouth Shape | Morph Targets Activated |
+|------------------|--------------------|--------------------------|
+| `aa`             | Wide open (as in *car*) | `mouthOpen`, `jawOpen`, `viseme_aa` |
+| `O`              | Rounded lips | `mouthFunnel`, `viseme_O` |
+| `I` / `E`        | Smiling sound | `mouthSmile`, `viseme_I` |
+| `FF`             | Teeth-on-lip shape | `mouthRollLower`, `viseme_FF` |
+| `sil`            | Silence / closed | All targets set to 0 |
+
+#### Smoothing:
+Lip movement uses **lerp interpolation** between current and target morph weights for natural animation:
+
+```ts
+THREE.MathUtils.lerp(currentWeight, targetWeight, 0.2)
+```
+
+### ⚙️ Getting Started
+Ensure you have a Ready Player Me avatar URL (GLB file).
+Example:
+
+```ts
+const avatarUrl = 'https://models.readyplayer.me/your-avatar-id.glb';
+```
+Place it in the component:
+
+```tsx
+<ReadyPlayerMeAvatar avatarUrl={avatarUrl} />
+```
+To trigger lip sync with an audio file:
+
+```ts
+avatarControls.playAudio('/audio/interview-sample.mp3');
+```
 
 ### Database
 
