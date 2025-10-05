@@ -1,0 +1,819 @@
+[
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about yourself.",
+    "category": "personal",
+    "difficulty_level": 1,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What three words would your friends use to describe you?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What is your greatest strength and weakness?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What book has influenced you the most?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How would you describe your learning style?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What do you do for fun outside of school?",
+    "category": "personal",
+    "difficulty_level": 1,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What accomplishment are you most proud of?",
+    "category": "personal",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How do you handle stress or pressure?",
+    "category": "personal",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Why are you interested in this field of study?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What sparked your interest in this major?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Why do you want to attend our university?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What do you hope to gain from your college experience?",
+    "category": "motivation",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What makes you a good fit for this program?",
+    "category": "motivation",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What specific courses or opportunities at our school excite you most?",
+    "category": "motivation",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How will you contribute to our campus community?",
+    "category": "motivation",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What other schools are you considering and why?",
+    "category": "motivation",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a time you faced a significant challenge.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you worked in a team.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a leadership experience.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you failed and what you learned.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a situation where you had to work with someone difficult.",
+    "category": "behavioral",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you had to make a difficult decision.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a time you stepped outside your comfort zone.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you had to manage competing priorities.",
+    "category": "behavioral",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Describe a time you helped resolve a conflict.",
+    "category": "behavioral",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Tell me about a time you showed initiative.",
+    "category": "behavioral",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What are your career goals?",
+    "category": "future_goals",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "Where do you see yourself in 10 years?",
+    "category": "future_goals",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How do you plan to make an impact in your field?",
+    "category": "future_goals",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What problem in the world would you most like to solve?",
+    "category": "future_goals",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "How will your education here help you achieve your goals?",
+    "category": "future_goals",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "All",
+    "question_text": "What kind of legacy do you want to leave?",
+    "category": "future_goals",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "STEM",
+    "question_text": "Tell me about a technical project you've worked on.",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Computer Science",
+    "question_text": "What programming languages are you familiar with and what have you built?",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Engineering",
+    "question_text": "Describe an engineering challenge you've tackled.",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "STEM",
+    "question_text": "What current scientific or technological development excites you most?",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "STEM",
+    "question_text": "How do you approach problem-solving in technical contexts?",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "General",
+    "program": "Business",
+    "question_text": "What business leader do you admire and why?",
+    "category": "academic",
+    "difficulty_level": 2,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Economics",
+    "question_text": "What economic issue concerns you most and how would you address it?",
+    "category": "academic",
+    "difficulty_level": 4,
+    "source": "standard"
+  },
+  {
+    "university": "General",
+    "program": "Business",
+    "question_text": "Describe an entrepreneurial or business experience you've had.",
+    "category": "academic",
+    "difficulty_level": 3,
+    "source": "standard"
+  },
+  
+  {
+    "university": "MIT",
+    "program": "All",
+    "question_text": "How do you plan to take advantage of MIT's hands-on approach to learning?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "MIT",
+    "program": "Engineering",
+    "question_text": "How would you contribute to MIT's maker culture?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  
+  {
+    "university": "Stanford",
+    "program": "All",
+    "question_text": "How would Stanford's interdisciplinary approach benefit your education?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Stanford",
+    "program": "Engineering",
+    "question_text": "How do you see yourself using Stanford's d.school resources?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  
+  {
+    "university": "Harvard",
+    "program": "All",
+    "question_text": "How would you take advantage of Harvard's house system?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Harvard",
+    "program": "All",
+    "question_text": "What does veritas (truth) mean to you in the context of your education?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "Princeton",
+    "program": "All",
+    "question_text": "How do Princeton’s commitments to service and civic engagement align with your goals?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Princeton",
+    "program": "Engineering",
+    "question_text": "How would you use Princeton’s integration of engineering with the liberal arts to approach innovation?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Yale",
+    "program": "All",
+    "question_text": "Yale emphasizes intellectual curiosity as a lifelong pursuit. Can you share a moment that reflects this quality in you?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Yale",
+    "program": "Humanities",
+    "question_text": "Yale values interdisciplinary exploration. How might you connect the humanities with other areas of knowledge here?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Columbia",
+    "program": "All",
+    "question_text": "How do you see yourself engaging with Columbia’s Core Curriculum both intellectually and personally?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "Columbia",
+    "program": "STEM",
+    "question_text": "Columbia encourages the fusion of research and societal impact. What social issue would you use science to address?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Chicago",
+    "program": "All",
+    "question_text": "How do you approach intellectual challenges in the spirit of UChicago’s ‘life of the mind’?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Chicago",
+    "program": "Economics",
+    "question_text": "UChicago is known for rigorous inquiry in economics—how would you apply that mindset to today’s global economic issues?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Pennsylvania",
+    "program": "All",
+    "question_text": "How would Penn’s ‘One University’ philosophy influence the way you pursue your academic interests?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Pennsylvania",
+    "program": "Business",
+    "question_text": "Wharton emphasizes leadership through innovation. What problem would you tackle through entrepreneurial thinking?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "Caltech",
+    "program": "All",
+    "question_text": "How do collaboration and curiosity drive your approach to science and discovery, as they do at Caltech?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Caltech",
+    "program": "Engineering",
+    "question_text": "Caltech values rigor and creativity in problem-solving. Can you describe a time you combined both?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "Duke",
+    "program": "All",
+    "question_text": "How does Duke’s focus on knowledge in service to society resonate with your academic or personal passions?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Northwestern",
+    "program": "All",
+    "question_text": "How would you take advantage of Northwestern’s flexible curriculum to design your own academic journey?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Northwestern",
+    "program": "Communication",
+    "question_text": "How would you use Northwestern’s integration of communication theory and practice to address a real-world issue?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Dartmouth",
+    "program": "All",
+    "question_text": "How would you engage with Dartmouth’s close-knit community to enhance both your learning and others’ experiences?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "Brown",
+    "program": "All",
+    "question_text": "How does Brown’s Open Curriculum align with your approach to intellectual exploration?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Cornell",
+    "program": "All",
+    "question_text": "Cornell values ‘any person, any study.’ How does that philosophy reflect in your academic or personal journey?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Johns Hopkins",
+    "program": "All",
+    "question_text": "How would Johns Hopkins’ research-first approach shape your development as a scholar?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Johns Hopkins",
+    "program": "Pre-Med",
+    "question_text": "Medicine at Hopkins is rooted in discovery. What health challenge would you most like to investigate?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "Rice",
+    "program": "All",
+    "question_text": "How would you engage in Rice’s tight-knit residential community while pursuing academic excellence?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "Vanderbilt",
+    "program": "All",
+    "question_text": "How could Vanderbilt’s emphasis on collaboration and innovation enhance your college experience?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "Notre Dame",
+    "program": "All",
+    "question_text": "Notre Dame emphasizes ethical leadership rooted in faith and reason. How do you see those values guiding you?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "UCLA",
+    "program": "All",
+    "question_text": "How will you engage with UCLA’s culture of diversity and public service?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "UC Berkeley",
+    "program": "All",
+    "question_text": "Berkeley encourages students to challenge convention. When have you done that in your own life?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Georgetown",
+    "program": "All",
+    "question_text": "How does Georgetown’s Jesuit tradition of cura personalis — care for the whole person — resonate with your goals?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Carnegie Mellon",
+    "program": "Computer Science",
+    "question_text": "CMU values applying computer science for societal benefit. What real-world issue would you build technology to improve?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "Emory",
+    "program": "All",
+    "question_text": "How do Emory’s strengths in both research and community engagement align with your vision of impact?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Washington University in St. Louis",
+    "program": "All",
+    "question_text": "WashU emphasizes learning by doing. How have hands-on experiences shaped your academic growth?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "Washington University in St. Louis",
+    "program": "Biomedical Engineering",
+    "question_text": "WashU is known for bridging engineering and medicine. What health challenge would you want to address through bioengineering?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Michigan",
+    "program": "All",
+    "question_text": "Michigan’s tradition of ‘Leaders and Best’ emphasizes both excellence and public service. How do you embody those ideals?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Michigan",
+    "program": "Computer Science",
+    "question_text": "The CSE program at Michigan encourages collaboration and impact. How have you used technology to improve your community?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "New York University",
+    "program": "All",
+    "question_text": "NYU thrives on its integration with the city. How would you take advantage of New York’s energy and diversity in your studies?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "New York University",
+    "program": "Business",
+    "question_text": "NYU Stern emphasizes real-world impact. How would you connect classroom concepts to solve a global business problem?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Southern California",
+    "program": "All",
+    "question_text": "USC values the convergence of creativity and innovation. How have you combined imagination and technical skill to create something new?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Southern California",
+    "program": "Film",
+    "question_text": "USC’s School of Cinematic Arts stands at the intersection of storytelling and technology. How do you plan to use film to influence culture?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "University of North Carolina at Chapel Hill",
+    "program": "All",
+    "question_text": "Carolina’s mission centers on ‘light and liberty.’ What idea or cause do you hope to illuminate through your education?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "University of North Carolina at Chapel Hill",
+    "program": "Public Health",
+    "question_text": "UNC’s Gillings School focuses on real-world health solutions. What public health challenge inspires you most to solve?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Virginia",
+    "program": "All",
+    "question_text": "Jefferson’s vision for UVA was to foster citizen leaders. How do you define leadership in service of others?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Virginia",
+    "program": "Politics",
+    "question_text": "UVA’s programs encourage deep civic understanding. What political issue would you most like to explore—and why?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Texas at Austin",
+    "program": "All",
+    "question_text": "UT Austin’s motto is ‘What starts here changes the world.’ What change do you hope to start?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Texas at Austin",
+    "program": "Engineering",
+    "question_text": "The Cockrell School champions innovation through collaboration. How do you build and work effectively on engineering teams?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Georgia Institute of Technology",
+    "program": "All",
+    "question_text": "Georgia Tech’s motto is ‘Progress and Service.’ How do you balance technological progress with social responsibility?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Georgia Institute of Technology",
+    "program": "Computer Engineering",
+    "question_text": "Georgia Tech emphasizes real-world application. Describe a project where you designed or optimized a system for efficiency.",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Carnegie Mellon University",
+    "program": "Art and Technology",
+    "question_text": "CMU’s interdisciplinary ethos blends creativity and computation. How would you merge art and technology to express an idea or solve a problem?",
+    "category": "school_specific",
+    "difficulty_level": 5,
+    "source": "official_website"
+  },
+  {
+    "university": "Tufts University",
+    "program": "All",
+    "question_text": "Tufts encourages active citizenship. How do you approach using your talents for social good?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Tufts University",
+    "program": "International Relations",
+    "question_text": "Tufts’ Fletcher School fosters global engagement. What international issue compels you to act?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Boston College",
+    "program": "All",
+    "question_text": "Boston College’s Jesuit tradition emphasizes ‘men and women for others.’ How do you strive to serve others through your ambitions?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "Boston University",
+    "program": "All",
+    "question_text": "BU’s global orientation encourages students to engage beyond borders. How do you view your education as a global citizen?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "Boston University",
+    "program": "Journalism",
+    "question_text": "BU’s College of Communication emphasizes truth-seeking in journalism. What story or issue do you feel compelled to tell?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Northwestern",
+    "program": "Journalism",
+    "question_text": "How would you use the Medill School’s focus on innovation and impact to tell stories that inspire change?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "Rutgers University",
+    "program": "All",
+    "question_text": "Rutgers’ history is rooted in public service. How do you see your education addressing issues in your community?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "Indiana University Bloomington",
+    "program": "Business",
+    "question_text": "The Kelley School focuses on integrity in business decision-making. How do ethics guide your understanding of success?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Wisconsin–Madison",
+    "program": "All",
+    "question_text": "The Wisconsin Idea connects education to public good. How would you use your education to improve lives beyond campus?",
+    "category": "school_specific",
+    "difficulty_level": 3,
+    "source": "official_website"
+  },
+  {
+    "university": "University of Illinois Urbana–Champaign",
+    "program": "Engineering",
+    "question_text": "UIUC engineers are change-makers. What engineering problem fascinates you most and how would you approach solving it?",
+    "category": "school_specific",
+    "difficulty_level": 4,
+    "source": "official_website"
+  }
+]
+

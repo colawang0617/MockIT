@@ -1,1 +1,15 @@
 node_modules
+<<<<<<< HEAD
+=======
+
+# Temporary audio files
+temp_audio/
+*.mp3
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+>>>>>>> b14ebf74fa5fe34ac85045c4c6ccf1629161e655
