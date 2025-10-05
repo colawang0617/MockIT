@@ -493,7 +493,7 @@ export default function InterviewPage() {
                     {/* Avatar Section - Left Side */}
                     <div style={{
                         flex: '0 0 500px',
-                        height: '600px',
+                        height: '800px',
                         background: 'rgba(0,0,0,0.2)',
                         backdropFilter: 'blur(10px)',
                         borderRadius: '20px',
