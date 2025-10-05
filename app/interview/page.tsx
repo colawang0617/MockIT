@@ -159,7 +159,7 @@ export default function InterviewPage() {
                             console.log(`⏭️ Skipped short speech: "${trimmedText}" (too short)`);
                             setTranscript(''); // Clear transcript anyway
                         }
-                    }, 2500); // Increased to 2.5 seconds - allows natural breathing pauses between phrases
+                    }, 2000); // 2 seconds - natural breathing pause between phrases
                 }
             };
 

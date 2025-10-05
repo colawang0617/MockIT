@@ -8,7 +8,7 @@ export function getSnowflakeConnection(){
         password: process.env.SNOWFLAKE_PASSWORD!,
         warehouse: 'COMPUTE_WH',
         database: process.env.SNOWFLAKE_DATABASE!,
-        schema: process.env.SNOWFLAKE_SCHEMA!,
+        schema: process.env.SNOWFLAKE_SCHEMA!
     });
     return connection;
 }
@@ -24,25 +24,42 @@ export async function executeQuery(query: string, binds: any[] = []): Promise<an
                 return;
             }
 
-            console.log('✅ Snowflake connected, executing query...');
+            console.log('✅ Snowflake connected, setting context and executing query...');
+
+            // Set database and schema context first
+            const contextQuery = `USE DATABASE ${process.env.SNOWFLAKE_DATABASE}; USE SCHEMA ${process.env.SNOWFLAKE_SCHEMA};`;
+
             conn.execute({
-                sqlText: query,
-                binds: binds,
-                complete: (err: any, stmt: any, rows: any) => {
-                    // Always destroy connection after query
-                    conn.destroy((destroyErr: any) => {
-                        if (destroyErr) {
-                            console.error('⚠️ Error closing connection:', destroyErr);
+                sqlText: contextQuery,
+                complete: (contextErr: any) => {
+                    if (contextErr) {
+                        console.error('❌ Context setup error:', contextErr);
+                        conn.destroy(() => {});
+                        reject(contextErr);
+                        return;
+                    }
+
+                    // Now execute the actual query
+                    conn.execute({
+                        sqlText: query,
+                        binds: binds,
+                        complete: (err: any, stmt: any, rows: any) => {
+                            // Always destroy connection after query
+                            conn.destroy((destroyErr: any) => {
+                                if (destroyErr) {
+                                    console.error('⚠️ Error closing connection:', destroyErr);
+                                }
+                            });
+
+                            if (err) {
+                                console.error('❌ Query error:', err);
+                                reject(err);
+                            } else {
+                                console.log('✅ Query successful, rows:', rows?.length || 0);
+                                resolve(rows || []);
+                            }
                         }
                     });
-
-                    if (err) {
-                        console.error('❌ Query error:', err);
-                        reject(err);
-                    } else {
-                        console.log('✅ Query successful, rows:', rows?.length || 0);
-                        resolve(rows || []);
-                    }
                 }
             });
         });
@@ -57,7 +74,7 @@ export async function createUser(email: string, password: string): Promise<strin
 
     try {
         await executeQuery(
-            `INSERT INTO USERS (USER_ID, EMAIL, PASSWORD_HASH, CREATED_AT) VALUES (?, ?, ?, CURRENT_TIMESTAMP())`,
+            `INSERT INTO USERS (id, email, password, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP())`,
             [userId, email, password] // In production, password should be hashed!
         );
         return userId;
@@ -74,8 +91,8 @@ export async function createUser(email: string, password: string): Promise<strin
  */
 export async function authenticateUser(email: string, password: string): Promise<{ userId: string } | null> {
     const rows = await executeQuery(
-        `SELECT USER_ID FROM USERS WHERE EMAIL = ? AND PASSWORD_HASH = ?`,
-        [email, password] // In production, compare hashed passwords!
+        `SELECT USER_ID FROM USERS WHERE email = ? AND password = ?`,
+        [email, password] 
     );
 
     if (rows.length > 0) {
