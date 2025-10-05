@@ -431,3 +431,14 @@
 {"level":"INFO","message":"[3:23:04.277 AM]: Connection[id: aba39df5-8694-443a-b914-b7a5b79303b6] - connecting. Associated Snowflake domain: GLOBAL"}
 {"level":"INFO","message":"[3:23:04.283 AM]: Connection[id: aba39df5-8694-443a-b914-b7a5b79303b6] - authentication successful using: SNOWFLAKE"}
 {"level":"INFO","message":"[3:23:04.291 AM]: Connection[id: aba39df5-8694-443a-b914-b7a5b79303b6] - connected successfully after 13.22 milliseconds"}
+{"level":"INFO","message":"[4:01:59.577 AM]: Creating new connection object"}
+{"level":"INFO","message":"[4:01:59.855 AM]: Creating Connection[id: 9e99d20b-4557-4c74-9d87-3d9d4ab0c058] with host: LD82662.snowflakecomputing.com, account: LD82662, accessUrl: https://LD82662.snowflakecomputing.com, user: h358wang, role: undefined, database: INTERVIEW_PREP, schema: INTERVIEW_DATA, warehouse: COMPUTE_WH, proxy was not configured, password is provided, region: undefined, authenticator: SNOWFLAKE, ocsp mode: FAIL_OPEN, os: darwin, os version: 24.3.0"}
+{"level":"INFO","message":"[4:01:59.857 AM]: Connection[id: 9e99d20b-4557-4c74-9d87-3d9d4ab0c058] additional details: passcode in password is provided, passcode is not provided, private key is not provided, application: undefined, client name: snowflake-sdk, client version: 2.3.0, retry timeout: 300, private key path: undefined, private key pass is not provided, client store temporary credential: false, browser response timeout: 120000"}
+{"level":"INFO","message":"[4:01:59.858 AM]: Connection[id: 9e99d20b-4557-4c74-9d87-3d9d4ab0c058] - connection object created successfully."}
+{"level":"INFO","message":"[4:01:59.905 AM]: Connection[id: 9e99d20b-4557-4c74-9d87-3d9d4ab0c058] - connecting. Associated Snowflake domain: GLOBAL"}
+{"level":"INFO","message":"[4:01:59.907 AM]: Connection[id: 9e99d20b-4557-4c74-9d87-3d9d4ab0c058] - authentication successful using: SNOWFLAKE"}
+{"level":"INFO","message":"[4:01:59.912 AM]: Trying to initialize Easy Logging"}
+{"level":"INFO","message":"[4:01:59.948 AM]: No client config detected."}
+{"level":"INFO","message":"[4:01:59.949 AM]: No config file path found. Client config will not be used."}
+{"level":"INFO","message":"[4:01:59.950 AM]: Easy Logging is disabled as no config has been found"}
+{"level":"INFO","message":"[4:01:59.972 AM]: Connection[id: 9e99d20b-4557-4c74-9d87-3d9d4ab0c058] - connected successfully after 67.19 milliseconds"}
