@@ -1,4 +1,4 @@
-import { textToSpeechAudio } from '../Elevenlabs/textToSpeechAudio';
+import { textToSpeechAudio } from '../elevenlabs/textToSpeechAudio';
 import { readFile } from 'fs/promises';
 
 /**

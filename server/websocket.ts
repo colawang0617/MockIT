@@ -4,7 +4,7 @@ import { generateInterviewerResponse } from './aiInterviewer';
 import { generateVoiceAudio } from './voiceGenerator';
 import { analyzeForInterruption, SpeechTracker } from './interruptionEngine';
 import { QuestionBank } from './questionBank';
-import { saveCompleteInterviewSession } from '../Snowflake/lib/db/sessions';
+import { saveCompleteInterviewSession } from '../snowflake/lib/db/sessions';
 
 export interface InterviewSession {
     sessionId: string;
