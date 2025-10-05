@@ -608,7 +608,7 @@ export default function InterviewPage() {
                 }}>
                     {/* Left Side - Avatar and User Camera */}
                     <div style={{
-                        flex: '0 0 600px',
+                        flex: '0 0 500px',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '1rem'

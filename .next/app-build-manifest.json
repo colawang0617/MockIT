@@ -15,6 +15,7 @@
       "static/chunks/main-app.js",
       "static/chunks/app/prepare/page.js"
     ],
+<<<<<<< Updated upstream
     "/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -25,6 +26,8 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/auth/route.js"
     ],
+=======
+>>>>>>> Stashed changes
     "/interview/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
