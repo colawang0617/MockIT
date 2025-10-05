@@ -28,53 +28,30 @@ export default function LoginPage() {
         setLoading(true);
         setError('');
 
-        try {
-            console.log('Attempting authentication:', { action: isLogin ? 'login' : 'signup', email });
+        // Instant login - store credentials and redirect
+        // No database needed for this demo
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('userId', `user_${Date.now()}`);
 
-            const response = await fetch('/api/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    action: isLogin ? 'login' : 'signup',
-                    email,
-                    password
-                }),
-            });
-
-            console.log('Response status:', response.status);
-            const data = await response.json();
-            console.log('Response data:', data);
-
-            if (response.ok) {
-                // Store user session
-                localStorage.setItem('userEmail', email);
-                localStorage.setItem('userId', data.userId);
-
-                // Redirect to setup page
-                router.push('/');
-            } else {
-                setError(data.message || 'Authentication failed');
-            }
-        } catch (err) {
-            console.error('Auth error:', err);
-            setError('Network error. Please try again.');
-        } finally {
-            setLoading(false);
-        }
+        // Simulate a brief loading for UX
+        setTimeout(() => {
+            router.push('/');
+        }, 500);
     };
 
     return (
         <div style={{
-            minHeight: '100vh',
+            height: '100vh',
+            width: '100vw',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            margin: 0,
+            padding: 0
         }}>
             {/* Animated background shapes */}
             <div style={{
@@ -103,7 +80,11 @@ export default function LoginPage() {
                 width: '100%',
                 padding: '0 2rem',
                 position: 'relative',
-                zIndex: 1
+                zIndex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
             }}>
                 {/* Title */}
                 <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
@@ -132,7 +113,8 @@ export default function LoginPage() {
                     borderRadius: '24px',
                     padding: '2.5rem',
                     boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-                    backdropFilter: 'blur(10px)'
+                    backdropFilter: 'blur(10px)',
+                    width: '100%'
                 }}>
                     {/* Email Input */}
                     <div style={{ marginBottom: '1.5rem' }}>
@@ -162,7 +144,8 @@ export default function LoginPage() {
                                 borderRadius: '12px',
                                 outline: 'none',
                                 transition: 'all 0.3s ease',
-                                boxShadow: focused === 'email' ? '0 0 0 3px rgba(102,126,234,0.1)' : 'none'
+                                boxShadow: focused === 'email' ? '0 0 0 3px rgba(102,126,234,0.1)' : 'none',
+                                boxSizing: 'border-box'
                             }}
                         />
                     </div>
@@ -196,7 +179,8 @@ export default function LoginPage() {
                                 borderRadius: '12px',
                                 outline: 'none',
                                 transition: 'all 0.3s ease',
-                                boxShadow: focused === 'password' ? '0 0 0 3px rgba(102,126,234,0.1)' : 'none'
+                                boxShadow: focused === 'password' ? '0 0 0 3px rgba(102,126,234,0.1)' : 'none',
+                                boxSizing: 'border-box'
                             }}
                         />
                     </div>

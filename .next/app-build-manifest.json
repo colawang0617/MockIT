@@ -15,6 +15,16 @@
       "static/chunks/main-app.js",
       "static/chunks/app/prepare/page.js"
     ],
+    "/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/login/page.js"
+    ],
+    "/api/auth/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/auth/route.js"
+    ],
     "/interview/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

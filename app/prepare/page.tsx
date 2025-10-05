@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 
 export default function PreparePage() {
     const router = useRouter();
@@ -41,14 +40,17 @@ export default function PreparePage() {
 
     return (
         <div style={{
-            minHeight: '100vh',
+            height: '100vh',
+            width: '100vw',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            margin: 0,
+            padding: 0
         }}>
             {/* Animated background shapes */}
             <div style={{
@@ -84,7 +86,7 @@ export default function PreparePage() {
                     <>
                         {/* Preparation Instructions */}
                         <div style={{
-                            marginBottom: '3rem'
+                            marginBottom: '2.5rem'
                         }}>
                             <h1 style={{
                                 fontSize: '3rem',
@@ -100,7 +102,7 @@ export default function PreparePage() {
                                 color: 'rgba(255,255,255,0.9)',
                                 fontSize: '1.2rem',
                                 fontWeight: '300',
-                                marginBottom: '2rem'
+                                margin: 0
                             }}>
                                 Your interview with {university} - {program}
                             </p>
@@ -109,18 +111,18 @@ export default function PreparePage() {
                         {/* Instructions Card */}
                         <div style={{
                             background: 'rgba(255,255,255,0.95)',
-                            borderRadius: '24px',
-                            padding: '3rem',
+                            borderRadius: '20px',
+                            padding: '2rem',
                             boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
                             backdropFilter: 'blur(10px)',
                             marginBottom: '2rem',
                             textAlign: 'left'
                         }}>
                             <h2 style={{
-                                fontSize: '1.5rem',
+                                fontSize: '1.25rem',
                                 fontWeight: 'bold',
                                 color: '#2d3748',
-                                marginBottom: '1.5rem'
+                                marginBottom: '1rem'
                             }}>
                                 Before we begin:
                             </h2>
@@ -128,7 +130,7 @@ export default function PreparePage() {
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: '1.25rem'
+                                gap: '0.875rem'
                             }}>
                                 {[
                                     { icon: '🎤', text: 'Make sure your microphone is working and you\'re in a quiet environment' },
@@ -140,14 +142,14 @@ export default function PreparePage() {
                                     <div key={index} style={{
                                         display: 'flex',
                                         alignItems: 'flex-start',
-                                        gap: '1rem',
-                                        padding: '1rem',
+                                        gap: '0.75rem',
+                                        padding: '0.75rem',
                                         background: 'rgba(102,126,234,0.05)',
-                                        borderRadius: '12px',
+                                        borderRadius: '10px',
                                         border: '1px solid rgba(102,126,234,0.1)'
                                     }}>
                                         <span style={{
-                                            fontSize: '1.5rem',
+                                            fontSize: '1.25rem',
                                             flexShrink: 0
                                         }}>
                                             {item.icon}
@@ -155,8 +157,8 @@ export default function PreparePage() {
                                         <p style={{
                                             margin: 0,
                                             color: '#4a5568',
-                                            fontSize: '1rem',
-                                            lineHeight: '1.5'
+                                            fontSize: '0.9rem',
+                                            lineHeight: '1.4'
                                         }}>
                                             {item.text}
                                         </p>
