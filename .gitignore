@@ -11,3 +11,5 @@ temp_audio/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+# clerk configuration (can include secrets)
+/.clerk/
